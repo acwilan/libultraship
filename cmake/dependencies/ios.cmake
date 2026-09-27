@@ -4,7 +4,14 @@ include(FetchContent)
 find_package(SDL2 QUIET)
 if (NOT ${SDL2_FOUND})
     set(sdl2_ios_controller_menu_press_patch_file ${CMAKE_CURRENT_SOURCE_DIR}/cmake/dependencies/patches/sdl2-ios-controller-menu-press.patch)
-    set(sdl2_ios_controller_menu_press_apply_patch_command ${CMAKE_COMMAND} -Dpatch_file=${sdl2_ios_controller_menu_press_patch_file} -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/dependencies/git-patch.cmake)
+    set(sdl2_ios_scene_lifecycle_patch_file ${CMAKE_CURRENT_SOURCE_DIR}/cmake/dependencies/patches/sdl2-uikit-scene-lifecycle.patch)
+    set(sdl2_ios_apply_patches_script ${CMAKE_CURRENT_SOURCE_DIR}/cmake/dependencies/apply-patches.cmake)
+    set(sdl2_ios_controller_menu_press_apply_patch_command
+        ${CMAKE_COMMAND}
+        -Dpatch_file=${sdl2_ios_controller_menu_press_patch_file}
+        -Dpatch_file_2=${sdl2_ios_scene_lifecycle_patch_file}
+        -P ${sdl2_ios_apply_patches_script}
+    )
 
     FetchContent_Declare(
         SDL2
